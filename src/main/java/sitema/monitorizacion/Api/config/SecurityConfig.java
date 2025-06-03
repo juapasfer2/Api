@@ -30,9 +30,15 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Permitir health checks y endpoints básicos
+                .requestMatchers("/", "/health", "/actuator/**").permitAll()
+                .requestMatchers("/favicon.ico", "/error").permitAll()
+                // Permitir endpoints de autenticación
                 .requestMatchers("/api/auth/**").permitAll()
+                // Endpoints protegidos por roles
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/nurse/**").hasRole("NURSE")
+                // Cualquier otra petición requiere autenticación
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
