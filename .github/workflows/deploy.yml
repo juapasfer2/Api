@@ -71,4 +71,7 @@ jobs:
             
             # Verificar que el servicio esté ejecutándose
             sudo systemctl status tomcat10 --no-pager
+            
+            # Verificar que ambos puertos estén activos
+            sudo netstat -tlnp | grep -E ":8080|:8443"
  
